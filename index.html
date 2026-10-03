@@ -1,0 +1,168 @@
+<!DOCTYPE html>
+<!--
+  ============================================================
+  واردکننده گروهی محصولات ووکامرس (WooCommerce Bulk Importer)
+  نسخه وب — برای اجرا فقط این سه فایل کنار هم باشند:
+      index.html , app.js , styles.css
+  می‌توانید با مرورگر باز کنید یا روی هر هاستی قرار دهید.
+  توجه: ووکامرس درخواست‌های REST را با CORS محدود می‌کند؛
+  اگر خطای CORS دیدید، یکی از راه‌های زیر را انجام دهید:
+    ۱) همین فایل‌ها را در پوشه تم/هاست همان فروشگاه آپلود کنید.
+    ۲) از افزونه‌ای مانند «Enable CORS» استفاده کنید.
+    ۳) یک Addon در مرورگر نصب کنید که هدر Access-Control-Allow-Origin را اضافه کند.
+  دسترسی کلید: ووکامرس → تنظیمات → پیشرفته → REST API → افزودن کلید
+  مجوز کلید باید «خواندن/نوشتن» باشد.
+  ============================================================
+-->
+<html lang="fa" dir="rtl">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>واردکننده گروهی محصولات ووکامرس</title>
+<link rel="stylesheet" href="styles.css">
+</head>
+<body>
+
+<!-- ==================== هدر داشبورد ==================== -->
+<header class="topbar">
+  <div class="brand">
+    <span class="logo-dot"></span>
+    <div>
+      <h1>واردکننده گروهی ووکامرس</h1>
+      <p class="sub">افزودن سریع و دسته‌جمعی محصولات به فروشگاه</p>
+    </div>
+  </div>
+  <div id="connBadge" class="badge badge-off"> متصل نیست </div>
+</header>
+
+<main class="grid">
+
+  <!-- ==================== کارت اتصال ==================== -->
+  <section class="card" id="card-connection">
+    <h2 class="card-title">
+      <span class="step-num">۱</span> اتصال به فروشگاه
+    </h2>
+    <form id="connForm" autocomplete="off">
+      <label>آدرس فروشگاه
+        <input type="url" id="storeUrl" placeholder="https://mystore.com" required dir="ltr">
+      </label>
+      <label>کلید Consumer Key
+        <input type="text" id="consumerKey" placeholder="ck_xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx" required dir="ltr">
+      </label>
+      <label>رمز Consumer Secret
+        <input type="password" id="consumerSecret" placeholder="cs_xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx" required dir="ltr">
+      </label>
+      <div class="row">
+        <button type="submit" class="btn btn-accent" id="btnTest">تست اتصال</button>
+        <span id="connStatus" class="status-dot"></span>
+      </div>
+      <p class="hint">کلیدها را از ووکامرس ← تنظیمات ← پیشرفته ← REST API بسازید (مجوز خواندن/نوشتن).</p>
+    </form>
+  </section>
+
+  <!-- ==================== کارت حالت ورود ==================== -->
+  <section class="card">
+    <h2 class="card-title">
+      <span class="step-num">۲</span> حالت ورود محصولات
+    </h2>
+    <div class="mode-tabs">
+      <button class="tab active" data-mode="csv">فایل CSV</button>
+      <button class="tab" data-mode="manual">ورود دستی</button>
+    </div>
+
+    <!-- حالت CSV -->
+    <div id="paneCsv" class="pane active">
+      <label class="dropzone" id="dropzone">
+        <input type="file" id="csvFile" accept=".csv,text/csv" hidden>
+        <span class="dz-icon"> CSV </span>
+        <span>فایل CSV را اینجا رها کنید یا کلیک کنید</span>
+        <small>الزامی: <code>name</code> — بقیه اختیاری. پشتیبانی از UTF-8 و BOM</small>
+      </label>
+      <p class="hint">
+        ستون‌های پشتیبانی‌شده: <code>name, sku, regular_price, sale_price, description,
+        short_description, category, stock, stock_status, weight, image_url, status, tags</code>
+      </p>
+      <button class="btn btn-ghost" id="btnSampleCsv" type="button">دانلود نمونه CSV</button>
+    </div>
+
+    <!-- حالت دستی -->
+    <div id="paneManual" class="pane">
+      <div class="form-grid">
+        <label>نام محصول * <input id="mName" type="text" required></label>
+        <label>قیمت عادی <input id="mPrice" type="number" min="0" step="0.01" dir="ltr"></label>
+        <label>قیمت فروش ویژه <input id="mSale" type="number" min="0" step="0.01" dir="ltr"></label>
+        <label>سری (SKU) <input id="mSku" type="text" dir="ltr"></label>
+        <label>دسته‌بندی (با کاما جدا کنید) <input id="mCat" type="text" placeholder="پوشاک، تی‌شرت"></label>
+        <label>تگ‌ها (با کاما) <input id="mTags" type="text"></label>
+        <label>موجودی <input id="mStock" type="number" min="0" step="1"></label>
+        <label>وزن (kg) <input id="mWeight" type="number" min="0" step="0.01" dir="ltr"></label>
+        <label class="full">آدرس تصویر <input id="mImage" type="url" dir="ltr" placeholder="https://..."></label>
+        <label class="full">توضیحات کوتاه <textarea id="mShort" rows="2"></textarea></label>
+        <label class="full">توضیحات کامل <textarea id="mDesc" rows="3"></textarea></label>
+      </div>
+      <div class="row">
+        <button class="btn btn-accent" id="btnAddManual" type="button">+ افزودن به لیست پیش‌نمایش</button>
+        <label class="chk"><input id="mRepeat" type="checkbox"> حفظ مقادیر برای محصول بعدی</label>
+      </div>
+    </div>
+  </section>
+
+  <!-- ==================== کارت پیش‌نمایش ==================== -->
+  <section class="card wide">
+    <h2 class="card-title">
+      <span class="step-num">۳</span> پیش‌نمایش محصولات
+      <span id="previewCount" class="pill">۰</span>
+    </h2>
+    <div class="table-wrap">
+      <table id="previewTable">
+        <thead><tr>
+          <th>#</th><th>نام</th><th>SKU</th><th>قیمت</th>
+          <th>فروش ویژه</th><th>دسته</th><th>موجودی</th><th>تصویر</th><th></th>
+        </tr></thead>
+        <tbody id="previewBody">
+          <tr class="empty-row"><td colspan="9">هنوز محصولی اضافه نشده — از بالا CSV بارگذاری کنید یا دستی وارد کنید.</td></tr>
+        </tbody>
+      </table>
+    </div>
+  </section>
+
+  <!-- ==================== کارت اجرا و پیشرفت ==================== -->
+  <section class="card wide">
+    <h2 class="card-title">
+      <span class="step-num">۴</span> اجرای ورود گروهی
+      <span id="batchInfo" class="hint-inline">دسته ۵تایی — ۵۰۰ms تأخیر بین دسته‌ها</span>
+    </h2>
+    <div class="row">
+      <button class="btn btn-cta" id="btnImport" disabled>شروع واردسازی</button>
+      <button class="btn btn-ghost" id="btnClear" type="button">پاک‌سازی لیست</button>
+      <label class="chk">حجم دسته:
+        <input id="batchSize" type="number" min="1" max="100" value="5" dir="ltr" style="width:70px">
+      </label>
+      <label class="chk"><input id="publishMode" type="checkbox" checked> انتشار مستقیم (پیش‌نویس = false)</label>
+    </div>
+
+    <div class="progress-wrap">
+      <div class="progress-bar"><div id="progressFill" class="progress-fill"></div></div>
+      <div class="progress-meta">
+        <span id="progressText">آماده</span>
+        <span id="progressPct">۰٪</span>
+      </div>
+    </div>
+
+    <div class="stats">
+      <div class="stat stat-ok"><span id="statOk">۰</span><small>موفق</small></div>
+      <div class="stat stat-err"><span id="statErr">۰</span><small>خطا</small></div>
+      <div class="stat"><span id="statTotal">۰</span><small>کل</small></div>
+    </div>
+
+    <pre id="log" class="log" dir="ltr"></pre>
+  </section>
+</main>
+
+<footer class="footer">
+  <p>AmirHossein HosseinMardi ©</p>
+</footer>
+
+<script src="app.js"></script>
+</body>
+</html>

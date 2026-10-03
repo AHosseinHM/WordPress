@@ -1,0 +1,310 @@
+/*
+  ==================================================================
+  واردکننده گروهی محصولات ووکامرس — styles.css
+  تم تیره اسلیت: #0F172A پایه، #F8FAFC متن، #38BDF8 تاکیدی، #F97316 CTA
+  کاملاً RTL و واکنش‌گرا
+  ==================================================================
+*/
+
+:root {
+  --bg: #0F172A;
+  --bg-card: #16203A;
+  --bg-input: #0B1120;
+  --text: #F8FAFC;
+  --text-dim: #94A3B8;
+  --accent: #38BDF8;
+  --cta: #F97316;
+  --border: rgba(148, 163, 184, .18);
+  --ok: #34D399;
+  --err: #F87171;
+  --radius: 10px;
+}
+
+* { margin: 0; padding: 0; box-sizing: border-box; }
+
+body {
+  font-family: "Vazirmatn", "Segoe UI", Tahoma, sans-serif;
+  background: radial-gradient(1200px 600px at 80% -10%, rgba(56,189,248,.08), transparent),
+              var(--bg);
+  color: var(--text);
+  min-height: 100vh;
+  direction: rtl;
+}
+
+/* ================= هدر ================= */
+.topbar {
+  display: flex; align-items: center; justify-content: space-between;
+  padding: 18px 28px;
+  border-bottom: 1px solid var(--border);
+  background: rgba(15, 23, 42, .7);
+  backdrop-filter: blur(8px);
+  position: sticky; top: 0; z-index: 10;
+}
+.brand { display: flex; align-items: center; gap: 14px; }
+.logo-dot {
+  width: 14px; height: 14px; border-radius: 50%;
+  background: var(--accent);
+  box-shadow: 0 0 16px var(--accent);
+}
+.topbar h1 { font-size: 1.15rem; font-weight: 700; }
+.topbar .sub { font-size: .8rem; color: var(--text-dim); }
+
+/* نشان وضعیت اتصال */
+.badge {
+  font-size: .78rem; padding: 6px 14px; border-radius: 999px;
+  border: 1px solid var(--border);
+  transition: all .25s ease;
+}
+.badge-on  { color: var(--ok); border-color: var(--ok); background: rgba(52,211,153,.08); }
+.badge-err { color: var(--err); border-color: var(--err); background: rgba(248,113,113,.08); }
+.badge-load{ color: var(--accent); border-color: var(--accent); }
+.badge-off { color: var(--text-dim); }
+
+/* ================= گرید اصلی ================= */
+.grid {
+  display: grid;
+  grid-template-columns: repeat(2, 1fr);
+  gap: 20px;
+  padding: 26px;
+  max-width: 1280px;
+  margin: 0 auto;
+}
+.card.wide { grid-column: 1 / -1; }
+@media (max-width: 900px) { .grid { grid-template-columns: 1fr; } }
+
+/* ================= کارت‌ها ================= */
+.card {
+  background: var(--bg-card);
+  border: 1px solid var(--border);
+  border-radius: var(--radius);
+  padding: 20px 22px;
+  transition: border-color .25s ease, transform .25s ease;
+}
+.card:hover { border-color: rgba(56,189,248,.4); }
+.card-title {
+  font-size: .98rem; font-weight: 700;
+  display: flex; align-items: center; gap: 10px;
+  margin-bottom: 16px;
+}
+.step-num {
+  display: inline-flex; align-items: center; justify-content: center;
+  width: 26px; height: 26px; border-radius: 8px;
+  background: rgba(56,189,248,.12);
+  color: var(--accent);
+  font-size: .85rem;
+  border: 1px solid rgba(56,189,248,.3);
+}
+.pill {
+  background: rgba(56,189,248,.12);
+  color: var(--accent);
+  border-radius: 999px;
+  padding: 2px 12px;
+  font-size: .78rem;
+}
+.hint-inline { font-size: .75rem; color: var(--text-dim); font-weight: 400; margin-inline-start: auto; }
+
+/* ================= فرم‌ها ================= */
+label {
+  display: block; font-size: .82rem; color: var(--text-dim);
+  margin-bottom: 12px;
+}
+input, textarea {
+  width: 100%; margin-top: 6px;
+  background: var(--bg-input);
+  border: 1px solid var(--border);
+  border-radius: 8px;
+  color: var(--text);
+  padding: 10px 12px;
+  font-size: .88rem;
+  font-family: inherit;
+  transition: border-color .2s ease, box-shadow .2s ease;
+}
+input:focus, textarea:focus {
+  outline: none;
+  border-color: var(--accent);
+  box-shadow: 0 0 0 3px rgba(56,189,248,.15);
+}
+textarea { resize: vertical; }
+
+.row { display: flex; align-items: center; gap: 12px; flex-wrap: wrap; margin-top: 4px; }
+.chk { display: inline-flex; align-items: center; gap: 6px; font-size: .8rem; color: var(--text-dim); cursor: pointer; }
+.chk input { width: auto; margin: 0; }
+
+.hint { font-size: .74rem; color: var(--text-dim); margin-top: 10px; line-height: 1.9; }
+.hint code { color: var(--accent); background: rgba(56,189,248,.08); padding: 1px 6px; border-radius: 5px; }
+
+/* ================= دکمه‌ها ================= */
+.btn {
+  border: 1px solid var(--border);
+  border-radius: 8px;
+  padding: 10px 22px;
+  font-size: .88rem; font-weight: 600;
+  font-family: inherit;
+  cursor: pointer;
+  transition: all .22s ease;
+  background: transparent;
+  color: var(--text);
+}
+.btn:hover:not(:disabled) { transform: translateY(-1px); }
+.btn:disabled { opacity: .45; cursor: not-allowed; }
+
+.btn-accent { color: var(--accent); border-color: rgba(56,189,248,.5); background: rgba(56,189,248,.08); }
+.btn-accent:hover:not(:disabled) { background: rgba(56,189,248,.18); box-shadow: 0 0 14px rgba(56,189,248,.25); }
+
+.btn-cta {
+  color: #fff;
+  background: linear-gradient(135deg, var(--cta), #EA580C);
+  border-color: var(--cta);
+}
+.btn-cta:hover:not(:disabled) { box-shadow: 0 4px 20px rgba(249,115,22,.4); }
+
+.btn-ghost:hover:not(:disabled) { border-color: var(--text-dim); }
+
+.del {
+  background: none; border: none; color: var(--err);
+  cursor: pointer; font-size: .9rem; opacity: .6;
+  transition: opacity .2s, transform .2s;
+}
+.del:hover { opacity: 1; transform: scale(1.2); }
+
+/* ================= تب‌ها ================= */
+.mode-tabs { display: flex; gap: 8px; margin-bottom: 16px; }
+.tab {
+  flex: 1; padding: 9px; border-radius: 8px;
+  background: transparent; color: var(--text-dim);
+  border: 1px solid var(--border);
+  font-family: inherit; font-size: .85rem; font-weight: 600;
+  cursor: pointer; transition: all .22s ease;
+}
+.tab:hover { color: var(--text); border-color: var(--text-dim); }
+.tab.active { color: var(--accent); border-color: var(--accent); background: rgba(56,189,248,.1); }
+
+.pane { display: none; }
+.pane.active { display: block; animation: fadeIn .25s ease; }
+@keyframes fadeIn { from { opacity: 0; transform: translateY(4px); } to { opacity: 1; } }
+
+/* ================= دراپ‌زون ================= */
+.dropzone {
+  display: flex; flex-direction: column; align-items: center; gap: 8px;
+  border: 2px dashed var(--border);
+  border-radius: var(--radius);
+  padding: 32px 16px;
+  text-align: center; cursor: pointer;
+  color: var(--text-dim); font-size: .88rem;
+  transition: all .25s ease;
+}
+.dropzone:hover, .dropzone.drag {
+  border-color: var(--accent);
+  background: rgba(56,189,248,.05);
+  color: var(--accent);
+}
+.dz-icon {
+  font-size: 1.1rem; font-weight: 700; color: var(--accent);
+  width: 46px; height: 46px; display: flex; align-items: center; justify-content: center;
+  border-radius: 12px; background: rgba(56,189,248,.1);
+  border: 1px solid rgba(56,189,248,.3);
+}
+
+/* ================= فرم دستی ================= */
+.form-grid {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 4px 14px;
+}
+.form-grid .full { grid-column: 1 / -1; }
+@media (max-width: 640px) { .form-grid { grid-template-columns: 1fr; } }
+
+/* ================= جدول پیش‌نمایش ================= */
+.table-wrap {
+  overflow-x: auto;
+  border: 1px solid var(--border);
+  border-radius: 8px;
+}
+table { width: 100%; border-collapse: collapse; font-size: .82rem; min-width: 720px; }
+thead th {
+  text-align: right;
+  padding: 10px 12px;
+  background: rgba(15,23,42,.6);
+  color: var(--text-dim);
+  font-weight: 600;
+  border-bottom: 1px solid var(--border);
+  white-space: nowrap;
+}
+tbody td {
+  padding: 9px 12px;
+  border-bottom: 1px solid rgba(148,163,184,.08);
+}
+tbody tr { transition: background .15s ease; }
+tbody tr:hover { background: rgba(56,189,248,.05); }
+.empty-row td { text-align: center; color: var(--text-dim); padding: 28px; }
+.cell-name { max-width: 260px; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
+
+/* ================= نوار پیشرفت ================= */
+.progress-wrap { margin: 18px 0 14px; }
+.progress-bar {
+  height: 10px; border-radius: 999px;
+  background: var(--bg-input);
+  border: 1px solid var(--border);
+  overflow: hidden;
+}
+.progress-fill {
+  height: 100%; width: 0;
+  border-radius: 999px;
+  background: linear-gradient(90deg, var(--accent), #0EA5E9);
+  transition: width .4s ease;
+}
+.progress-meta {
+  display: flex; justify-content: space-between;
+  font-size: .78rem; color: var(--text-dim); margin-top: 8px;
+}
+#progressPct { color: var(--accent); font-weight: 700; }
+
+/* ================= آمار ================= */
+.stats { display: flex; gap: 14px; flex-wrap: wrap; margin-bottom: 14px; }
+.stat {
+  flex: 1; min-width: 100px;
+  background: var(--bg-input);
+  border: 1px solid var(--border);
+  border-radius: var(--radius);
+  padding: 14px; text-align: center;
+}
+.stat span { font-size: 1.5rem; font-weight: 700; display: block; }
+.stat small { color: var(--text-dim); font-size: .74rem; }
+.stat-ok span { color: var(--ok); }
+.stat-err span { color: var(--err); }
+
+/* ================= لاگ ================= */
+.log {
+  background: var(--bg-input);
+  border: 1px solid var(--border);
+  border-radius: 8px;
+  padding: 14px;
+  font-family: monospace;
+  font-size: .76rem;
+  max-height: 220px;
+  overflow-y: auto;
+  white-space: pre-wrap;
+  color: var(--text-dim);
+  text-align: left;
+}
+.log-err { color: var(--err); }
+.log-ok  { color: var(--ok); }
+
+/* ================= نشانگر وضعیت ================= */
+.status-dot {
+  width: 12px; height: 12px; border-radius: 50%;
+  background: var(--text-dim);
+  display: inline-block;
+  transition: all .25s ease;
+}
+.status-dot.ok { background: var(--ok); box-shadow: 0 0 10px var(--ok); }
+.status-dot.err { background: var(--err); box-shadow: 0 0 10px var(--err); }
+.status-dot.loading { background: var(--accent); animation: pulse 1s infinite; }
+@keyframes pulse { 50% { opacity: .3; } }
+
+/* ================= فوتر ================= */
+.footer {
+  text-align: center; padding: 20px;
+  color: var(--text-dim); font-size: .75rem;
+  border-top: 1px solid var(--border);
+}
