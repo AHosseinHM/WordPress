@@ -1,0 +1,135 @@
+<style>
+/* ===================================================
+   WooCommerce Modern Notices by Amirhossein
+   Primary Accent Color: #6150FB
+   =================================================== */
+
+:root {
+  --wc-brand-purple: #6150FB;
+  --wc-brand-purple-light: rgba(97, 80, 251, 0.08);
+  --wc-brand-purple-hover: #4e3dd8;
+  --wc-success-green: #00b894;
+  --wc-error-red: #ff5252;
+}
+
+/* ساختار کلی و کانتینر اعلان‌ها */
+.woocommerce-notices-wrapper {
+  margin: 1.5rem auto;
+  max-width: 100%;
+}
+
+.woocommerce-message,
+.woocommerce-error,
+.woocommerce-info {
+	outline:0;
+  display: flex !important;
+  align-items: center;
+  justify-content: space-between;
+  flex-wrap: wrap;
+  gap: 12px;
+  padding: 14px 20px !important;
+  margin: 0 0 16px 0 !important;
+  border: none !important;
+  border-radius: 12px !important;
+  background-color: #ffffff !important;
+  box-shadow: 0 10px 25px -5px rgba(97, 80, 251, 0.08), 0 4px 6px -2px rgba(0, 0, 0, 0.03) !important;
+  font-family: inherit;
+  font-size: 0.92rem !important;
+  font-weight: 500;
+  line-height: 1.6;
+  color: #2d3436 !important;
+  position: relative;
+  overflow: hidden;
+  border-right: 5px solid var(--wc-brand-purple) !important; /* برای راستچین و زبان فارسی */
+  transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+	    font-family: "Estedad", Sans-serif !important;
+}
+
+/* افکت هاور ملایم روی کانتینر پیام */
+.woocommerce-message:hover,
+.woocommerce-error:hover,
+.woocommerce-info:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 14px 28px -5px rgba(97, 80, 251, 0.15), 0 6px 10px -2px rgba(0, 0, 0, 0.04) !important;
+}
+
+/* خط رنگی و بک‌گراند اختصاصی بر اساس وضعیت */
+/* 1. پیام‌های موفقیت / عملیات با رنگ شاخص بنفش #6150FB */
+.woocommerce-message {
+  border-right-color: var(--wc-brand-purple) !important;
+  background: linear-gradient(135deg, rgba(97, 80, 251, 0.04) 0%, #ffffff 100%) !important;
+}
+
+/* 2. پیام‌های اطلاعاتی */
+.woocommerce-info {
+  border-right-color: #3867d6 !important;
+  background: linear-gradient(135deg, rgba(56, 103, 214, 0.04) 0%, #ffffff 100%) !important;
+}
+
+/* 3. پیام‌های خطا و اخطار */
+.woocommerce-error {
+  border-right-color: var(--wc-error-red) !important;
+  background: linear-gradient(135deg, rgba(255, 82, 82, 0.04) 0%, #ffffff 100%) !important;
+  list-style: none !important;
+}
+
+.woocommerce-error li {
+  margin-bottom: 0 !important;
+  padding: 2px 0;
+}
+
+/* دکمه‌های اکشن داخل اعلان‌ها (مثل «مشاهده سبد خرید») */
+.woocommerce-message .button,
+.woocommerce-info .button,
+.woocommerce-error .button {
+  order: 2; /* در چیدمان فلکس کنار پیام یا سمت چپ قرار می‌گیرد */
+  background: var(--wc-brand-purple) !important;
+  color: #ffffff !important;
+  padding: 12px 18px !important;
+  border-radius: 8px !important;
+  font-weight: 600 !important;
+  font-size: 0.85rem !important;
+  box-shadow: 0 4px 12px rgba(97, 80, 251, 0.3) !important;
+  transition: all 0.25s ease !important;
+  text-decoration: none !important;
+  border: none !important;
+}
+
+.woocommerce-message .button:hover,
+.woocommerce-info .button:hover,
+.woocommerce-error .button:hover {
+  background: var(--wc-brand-purple-hover) !important;
+  transform: translateY(-1px);
+  box-shadow: 0 6px 16px rgba(97, 80, 251, 0.45) !important;
+}
+
+/* آیکون‌های ووکامرس (شخصی‌سازی شبه‌عنصرها) */
+.woocommerce-message::before,
+.woocommerce-info::before,
+.woocommerce-error::before {
+  color: var(--wc-brand-purple) !important;
+  top: 50% !important;
+  transform: translateY(-50%) !important;
+  font-size: 1.25rem !important;
+  right: 1.2rem !important; /* فاصله از راست برای سایت‌های RTL */
+  left: auto !important;
+}
+
+.woocommerce-error::before {
+  color: var(--wc-error-red) !important;
+}
+
+/* ریست فاصله متن از راست برای جا شدن آیکون پیش‌فرض */
+.woocommerce-message,
+.woocommerce-info,
+.woocommerce-error {
+  padding-right: 3.2rem !important;
+}
+	.return-to-shop{
+		display:none
+	}
+	.woocommerce-notices-wrapper{
+		padding:0 10px !important;
+		max-width:1300px !important
+	}
+</style>
